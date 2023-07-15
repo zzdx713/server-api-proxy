@@ -1,26 +1,21 @@
 const express = require("express");
 const { createProxyMiddleware } = require("http-proxy-middleware");
+const { HttpsProxyAgent } = require("https-proxy-agent");
 const server = express();
-
 const router = express.Router();
 
-router.use(
-  "/openai",
+const createProxy = (path, target) => [
+  path,
   createProxyMiddleware({
-    target: "https://api.openai.com",
+    target,
     changeOrigin: true,
-    pathRewrite: { "^/proxy/openai": "" },
-  })
-);
+    pathRewrite: { [`^/proxy${path}`]: "" },
+    agent: new HttpsProxyAgent(process.env.HTTP_PROXY),
+  }),
+];
 
-router.use(
-  "/midjourney",
-  createProxyMiddleware({
-    target: "https://cdn.discordapp.com",
-    changeOrigin: true,
-    pathRewrite: { "^/proxy/midjourney": "" },
-  })
-);
+router.use(...createProxy("/openai", "https://api.openai.com"));
+router.use(...createProxy("/midjourney", "https://api.openai.com"));
 
 server.use("/proxy", router);
 
