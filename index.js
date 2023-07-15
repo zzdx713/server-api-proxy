@@ -15,7 +15,7 @@ const createProxy = (path, target) => [
 ];
 
 router.use(...createProxy("/openai", "https://api.openai.com"));
-router.use(...createProxy("/midjourney", "https://api.openai.com"));
+router.use(...createProxy("/midjourney", "https://cdn.discordapp.com"));
 
 server.use("/proxy", router);
 
