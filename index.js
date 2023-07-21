@@ -4,9 +4,10 @@ const { HttpsProxyAgent } = require("https-proxy-agent");
 const server = express();
 const router = express.Router();
 
-const createProxy = (path, target) => [
+const createProxy = (path, target, options = {}) => [
   path,
   createProxyMiddleware({
+    ...options,
     target,
     changeOrigin: true,
     pathRewrite: { [`^/proxy${path}`]: "" },
@@ -19,6 +20,9 @@ const createProxy = (path, target) => [
 
 router.use(...createProxy("/openai", "https://api.openai.com"));
 router.use(...createProxy("/midjourney", "https://cdn.discordapp.com"));
+router.use(
+  ...createProxy("/discord", "https://gateway.discord.gg", { ws: true })
+);
 
 server.use("/proxy", router);
 
