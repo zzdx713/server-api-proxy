@@ -11,6 +11,9 @@ const createProxy = (path, target) => [
     changeOrigin: true,
     pathRewrite: { [`^/proxy${path}`]: "" },
     agent: new HttpsProxyAgent(process.env.HTTP_PROXY),
+    onProxyRes(res) {
+      res.headers["access-control-allow-origin"] = "*";
+    },
   }),
 ];
 
