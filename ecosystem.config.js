@@ -5,6 +5,7 @@ module.exports = {
       script: "index.js",
       env: {
         PORT: 9002,
+        HTTP_PROXY: 'http://localhost:7890'
       },
     },
   ],
