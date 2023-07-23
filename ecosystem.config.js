@@ -4,7 +4,7 @@ module.exports = {
       name: "proxy",
       script: "index.js",
       env: {
-        PORT: 9001,
+        PORT: 9002,
       },
     },
   ],
